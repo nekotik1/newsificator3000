@@ -1,4 +1,4 @@
-import { Data, data } from "./models/data";
+import { Data, data, Elaboration } from "./models/data";
 
 type Replacement = {
     regexp: RegExp;
@@ -6,9 +6,15 @@ type Replacement = {
 }
 
 const convertIntoReplacement = (data: Data): Replacement => {
-    const regexp = new RegExp(data.name);
-    const newText = data.name + " (" + data.elaboration + ")";
+    // TODO: \b doesn't work with Cyrillic
+    const regexp = new RegExp(/*"(?:(^|\\s))" +*/ data.name /*+ "(?=($|[\\s,.?!]))"*/, "ig");
+    const elaboration = chooseElaborationRandomly(data.elaborations);
+    const newText = data.name + " (" + elaboration.text + ")";
     return { regexp, newText }
+}
+
+const chooseElaborationRandomly = (elaborations: Elaboration[]) => {
+    return elaborations[Math.floor(Math.random() * elaborations.length)];
 }
 
 const replacements: Replacement[] = data.map(convertIntoReplacement);
@@ -20,15 +26,15 @@ const replaceTextInDom = (root: Node) => {
     while (walker.nextNode()) {
         const node = walker.currentNode;
         let newText = node.textContent;
-        for(let replacement of replacements) {
+        for (let replacement of replacements) {
             newText = newText.replace(replacement.regexp, replacement.newText);
         }
-        if(newText != node.textContent) {
+        if (newText != node.textContent) {
             node.textContent = newText;
             updateCount++;
         }
     }
-    console.log(`updated ${updateCount} times`);
+    console.log(`updated ${updateCount} places`);
 }
 
 /**

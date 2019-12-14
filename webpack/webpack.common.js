@@ -37,8 +37,8 @@ module.exports = {
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CopyPlugin([
             { from: '.', to: '../' }
-          ],
-          {context: 'public' }
+        ],
+            { context: 'public' }
         ),
     ]
 };
