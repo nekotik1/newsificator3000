@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "newsificator3000",
-  "description": "Elaborate news",
+  "name": "Новостификатор3000",
+  "description": "Как если бы в новостях было больше контекста.",
   "version": "1.0",
 
   "options_ui": {
