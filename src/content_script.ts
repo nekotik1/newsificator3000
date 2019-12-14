@@ -24,16 +24,25 @@ const replaceTextInDom = (root: Node) => {
     let updateCount = 0;
     while (walker.nextNode()) {
         const node = walker.currentNode;
-        let newText = node.textContent;
-        for (let replacement of replacements) {
-            newText = newText.replace(replacement.regexp, replacement.newText);
-        }
+        let newText = replaceText(node.textContent);
         if (newText != node.textContent) {
             node.textContent = newText;
             updateCount++;
         }
     }
     console.log(`updated ${updateCount} places`);
+}
+
+const replaceTextInTitle = () => {
+    document.title = replaceText(document.title);
+}
+
+const replaceText = (text: string) => {
+    let newText = text;
+    for (let replacement of replacements) {
+        newText = newText.replace(replacement.regexp, replacement.newText);
+    }
+    return newText;
 }
 
 /**
@@ -47,4 +56,5 @@ const rejectScriptTextFilter = {
     }
 };
 
+replaceTextInTitle();
 replaceTextInDom(document.body);
