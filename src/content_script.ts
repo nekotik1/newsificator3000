@@ -6,8 +6,7 @@ type Replacement = {
 }
 
 const convertIntoReplacement = (data: Data): Replacement => {
-    // TODO: \b doesn't work with Cyrillic
-    const regexp = new RegExp(/*"(?:(^|\\s))" +*/ data.name /*+ "(?=($|[\\s,.?!]))"*/, "ig");
+    const regexp = new RegExp(data.name + "(?=($|[^A-Za-z\u0400-\u04FF]))", "g");
     const elaboration = chooseElaborationRandomly(data.elaborations);
     const newText = data.name + " (" + elaboration.text + ")";
     return { regexp, newText }
