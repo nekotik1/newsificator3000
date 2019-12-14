@@ -11,8 +11,12 @@ npm i
 
 # Watch
 npm run watch
-# Specify dist/ dir for "Load unpacked"
 
 # Build
 npm run build
+
+# Load on Chrome
+## Visit chrome://extensions/
+## Turn on developer mode
+## Load unpacked and specify dist/ dir
 ```
