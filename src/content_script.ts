@@ -1,4 +1,5 @@
-import {Data, data, Elaboration} from "./models/data";
+import { Data, data, Elaboration } from "./models/data";
+import styleCss from "raw-loader!./style.css";
 
 type Replacement = {
     regexp: RegExp;
@@ -17,35 +18,7 @@ document.body.addEventListener("click", function (e) {
 
 document.head.appendChild((()=>{
     const style = document.createElement("style");
-    style.textContent = `
-.newsificator3000-name {
-    background-color: rgb(255, 240, 184);
-    position: relative;
-    display: inline-block;
-}
-.newsificator3000-tooltip {
-    position: absolute;
-    top: 120%;
-    color: #FFF;
-    background-color: #333;
-    font-weight: normal;
-    border-radius: 3px;
-    font-size: 14px;
-    line-height: 16px;
-    padding: 10px;
-    max-width: 300px;
-}
-.newsificator3000-tooltip:after {
-    content: "";
-    display: inline-block;
-    margin-top: -12px;
-    position: absolute;
-    top: 0%;
-    left: 10%;
-    border: 6px solid transparent;
-    border-bottom-color: #333;
-}
-    `;
+    style.textContent = styleCss;
     return style;
 })());
 
