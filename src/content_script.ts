@@ -7,32 +7,25 @@ type Replacement = {
     petitionLink?: string;
 }
 
-/*
-let cssLoaded = false;
-const loadCss = () =>{
-    if(cssLoaded) return;
-    cssLoaded = true;
-    document.head.appendChild((()=>{
-        const link = document.createElement("link");
-        link.rel="stylesheet";
-        link.type="text/css";
-        link.href = chrome.extension.getURL("public/style.css");
-        return link;
-    })());
-}
-*/
+document.body.addEventListener("click", function (e) {
+    const element = e.target as HTMLElement;
+    if(!element.classList.contains("newsificator3000-name")) return;
+    const style = (element.nextSibling as HTMLElement).style;
+    style.display = style.display === "none" ? "inline" : "none";
+    e.preventDefault();
+});
 
+let elementCounter = 0;
 const convertIntoReplacement = (data: Data): Replacement => {
-    const regexp = new RegExp(data.name + "(?=($|[^A-Za-z\u0400-\u04FF]))", "g");
+    const regexp = new RegExp(data.name + "(?=$|[^A-Za-z\u0400-\u04FF])", "g");
     const elaboration = chooseElaborationRandomly(data.elaborations);
-    const newText = data.name + " (" + elaboration.text + ")";
     const newFragment = document.createDocumentFragment();
-    newFragment.appendChild(document.createTextNode(newText));
-    if (data.name=="Павел Устинов")console.log(data.petitionLink);
+    const newText = data.name;
+    newFragment.appendChild(buildNameElement());
+    newFragment.appendChild(buildElaborationElement());
     if(data.petitionLink) {
         newFragment.appendChild((()=>{
             const a = document.createElement("a");
-            // a.className="newsificator3000-petition"
             a.href=data.petitionLink;
             a.style.display="inline-block";
             a.style.height="1em";
@@ -45,6 +38,21 @@ const convertIntoReplacement = (data: Data): Replacement => {
         })());
     }
     return { regexp, newText, newFragment, petitionLink: data.petitionLink }
+
+    function buildNameElement() {
+        const span = document.createElement("span");
+        span.textContent = data.name;
+        span.className="newsificator3000-name"
+        span.style.backgroundColor = "rgb(255, 240, 184)";
+        return span; 
+    }
+
+    function buildElaborationElement() {
+        const span = document.createElement("span");
+        span.textContent = " (" + elaboration.text + ")";
+        span.style.display="none";
+        return span;
+    }
 }
 
 const chooseElaborationRandomly = (elaborations: Elaboration[]) => {
@@ -90,7 +98,7 @@ const replaceInTextNode = (node: Text) => {
             } else {
                 const values = node.split(replacement.regexp);
                 for(let i=0; i<values.length; i++) {
-                    if(i>0 && i != values.length-1) newArr.push(replacement.newFragment.cloneNode(true));
+                    if(i>0) newArr.push(replacement.newFragment.cloneNode(true));
                     newArr.push(values[i])
                 }
             }
@@ -100,7 +108,6 @@ const replaceInTextNode = (node: Text) => {
     if(intermediates.length==1) {
         return;
     }
-    // loadCss();
     const frag = document.createDocumentFragment();
     for(let intermediate of intermediates) {
         if(typeof intermediate === "string") {
