@@ -10,10 +10,44 @@ type Replacement = {
 document.body.addEventListener("click", function (e) {
     const element = e.target as HTMLElement;
     if(!element.classList.contains("newsificator3000-name")) return;
-    const style = (element.nextSibling as HTMLElement).style;
+    const style = (element.childNodes[0] as HTMLElement).style;
     style.display = style.display === "none" ? "inline" : "none";
     e.preventDefault();
 });
+
+document.head.appendChild((()=>{
+    const style = document.createElement("style");
+    style.textContent = `
+.newsificator3000-name {
+    background-color: rgb(255, 240, 184);
+    position: relative;
+    display: inline-block;
+}
+.newsificator3000-tooltip {
+    position: absolute;
+    top: 120%;
+    color: #FFF;
+    background-color: #333;
+    font-weight: normal;
+    border-radius: 3px;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 10px;
+    max-width: 300px;
+}
+.newsificator3000-tooltip:after {
+    content: "";
+    display: inline-block;
+    margin-top: -12px;
+    position: absolute;
+    top: 0%;
+    left: 10%;
+    border: 6px solid transparent;
+    border-bottom-color: #333;
+}
+    `;
+    return style;
+})());
 
 let elementCounter = 0;
 const convertIntoReplacement = (data: Data): Replacement => {
@@ -22,7 +56,6 @@ const convertIntoReplacement = (data: Data): Replacement => {
     const newFragment = document.createDocumentFragment();
     const newText = data.name;
     newFragment.appendChild(buildNameElement());
-    newFragment.appendChild(buildElaborationElement());
     if(data.petitionLink) {
         newFragment.appendChild((()=>{
             const a = document.createElement("a");
@@ -41,15 +74,16 @@ const convertIntoReplacement = (data: Data): Replacement => {
 
     function buildNameElement() {
         const span = document.createElement("span");
-        span.textContent = data.name;
         span.className="newsificator3000-name"
-        span.style.backgroundColor = "rgb(255, 240, 184)";
+        span.appendChild(buildElaborationElement());
+        span.appendChild(document.createTextNode(data.name))
         return span; 
     }
 
     function buildElaborationElement() {
         const span = document.createElement("span");
-        span.textContent = " (" + elaboration.text + ")";
+        span.className="newsificator3000-tooltip";
+        span.textContent = elaboration.text;
         span.style.display="none";
         return span;
     }
