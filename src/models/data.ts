@@ -19,7 +19,7 @@ const tsv = parse(tsvFile, {
 });
 
 export const data: Data[] = tsv.data
-    .filter(row => row[0] !== "" && row[1] !== "")
+    .filter(row => row[0] !== "")
     .reduce((arr: Data[], row: string[])=>{
         for(let i in arr) {
             if(arr[i].name === row[0]) {

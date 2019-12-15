@@ -1,4 +1,4 @@
-import { Data, data, Elaboration } from "./models/data";
+import {Data, data, Elaboration} from "./models/data";
 
 type Replacement = {
     regexp: RegExp;
@@ -83,27 +83,27 @@ const convertIntoReplacement = (data: Data): Replacement => {
     function buildElaborationElement() {
         const span = document.createElement("span");
         span.className="newsificator3000-tooltip";
-        span.appendChild((()=>{
-            const descriptionSpan = document.createElement("span");
-            descriptionSpan.textContent = elaboration.text + "\n\n" + elaboration.petitionLinkTitle;
-            return descriptionSpan;
-        })());
-        span.appendChild((()=>{
-            const br = document.createElement("br");
-            br.textContent = elaboration.text;
-            return br;
-        })());
-        span.appendChild((()=>{
-            const br = document.createElement("br");
-            br.textContent = elaboration.text + "\n\n" + elaboration.petitionLinkTitle;
-            return br;
-        })());
-        span.appendChild((()=>{
-            const petitionLink = document.createElement("a");
-            petitionLink.href = elaboration.petitionLink;
-            petitionLink.textContent = elaboration.petitionLinkTitle;
-            return petitionLink;
-        })());
+        if (elaboration.text) {
+            span.appendChild((() => {
+                const descriptionSpan = document.createElement("span");
+                descriptionSpan.textContent = elaboration.text;
+                return descriptionSpan;
+            })());
+            span.appendChild((() => {
+                return document.createElement("br");
+            })());
+            span.appendChild((() => {
+                return document.createElement("br");
+            })());
+        }
+        if (elaboration.petitionLink && elaboration.petitionLinkTitle) {
+            span.appendChild((() => {
+                const petitionLink = document.createElement("a");
+                petitionLink.href = elaboration.petitionLink;
+                petitionLink.textContent = elaboration.petitionLinkTitle;
+                return petitionLink;
+            })());
+        }
         span.style.display="none";
         return span;
     }
