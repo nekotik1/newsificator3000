@@ -13,7 +13,8 @@
     font-size: 14px;
     line-height: 16px;
     padding: 10px;
-    max-width: 300px;
+    width: 200px;
+    z-index: 1;
 }
 .newsificator3000-tooltip:after {
     content: "";
@@ -21,7 +22,7 @@
     margin-top: -12px;
     position: absolute;
     top: 0%;
-    left: 10%;
+    left: 20%;
     border: 6px solid transparent;
     border-bottom-color: #333;
 }
