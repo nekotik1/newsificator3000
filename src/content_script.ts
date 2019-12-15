@@ -73,7 +73,24 @@ const chooseElaborationRandomly = (elaborations: Elaboration[]) => {
     return elaborations[Math.floor(Math.random() * elaborations.length)];
 };
 
-const replacements: Replacement[] = data.map(convertIntoReplacement);
+const buildNameOrderAgnosticReplacements = (data: Data[]) => {
+    const ret = [];
+    for (let datum of data) {
+        ret.push(convertIntoReplacement(datum));
+        if (datum.name.indexOf(" ") >= 0) {
+            const [a, b] = datum.name.split(" ");
+            console.log(a, b);
+            ret.push(convertIntoReplacement({
+                ...datum,
+                name: b + " " + a
+            }));
+        }
+    }
+    console.log("replacements", ret)
+    return ret;
+}
+
+const replacements: Replacement[] = buildNameOrderAgnosticReplacements(data);
 
 const replaceList = [];
 
