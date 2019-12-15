@@ -4,6 +4,7 @@ import tsvFile from "raw-loader!../data/data.tsv";
 export type Data = {
     name: string;
     elaborations: Elaboration[];
+    petitionLink?: string;
 }
 
 export type Elaboration = {
@@ -35,16 +36,18 @@ export const data: Data[] = tsv.data
             if(arr[i].name === row[0]) {
                 arr[i].elaborations.push({
                     text: row[1],
-                    link: row[2]
+                    link: row[2] || null
                 })
+                arr[i].petitionLink = arr[i].petitionLink || row[3] || null
                 return arr;
             }
         }
         arr.push({
             name: row[0],
             elaborations: [
-                {text: row[1], link: row[2]}
-            ]
+                {text: row[1], link: row[2] || null}
+            ],
+            petitionLink: row[3] || null
         })
         return arr;
     }, []);
