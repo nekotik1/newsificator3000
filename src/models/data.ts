@@ -11,6 +11,7 @@ export type Elaboration = {
     link?: string;
     petitionLink?: string;
     petitionLinkTitle?: string;
+    highlightStyle: string;
 }
 
 const tsv = parse(tsvFile, {
@@ -27,16 +28,17 @@ export const data: Data[] = tsv.data
                     text: row[1],
                     link: row[2] || null,
                     petitionLink: row[3] || null,
-                    petitionLinkTitle: row[4] || null
-                })
+                    petitionLinkTitle: row[4] || null,
+                    highlightStyle: row[5] || null
+                });
                 return arr;
             }
         }
         arr.push({
             name: row[0],
             elaborations: [
-                {text: row[1], link: row[2] || null, petitionLink: row[3] || null, petitionLinkTitle: row[4] || null}
+                {text: row[1], link: row[2] || null, petitionLink: row[3] || null, petitionLinkTitle: row[4] || null, highlightStyle: row[5] || null}
             ]
-        })
+        });
         return arr;
     }, []);
