@@ -4,25 +4,14 @@ import tsvFile from "raw-loader!../data/data.tsv";
 export type Data = {
     name: string;
     elaborations: Elaboration[];
-    petitionLink?: string;
 }
 
 export type Elaboration = {
     text: string;
     link?: string;
+    petitionLink?: string;
+    petitionLinkTitle?: string;
 }
-
-export const mockData: Data[] = [
-    {
-        name: "Medvedev",
-        elaborations: [{ text: "who has wine field in Italy" }]
-    },
-    {
-        name: "Putin",
-        elaborations: [{ text: "who controls everything in Russia" }]
-    }
-];
-
 
 const tsv = parse(tsvFile, {
     delimiter: "\t",
@@ -36,18 +25,18 @@ export const data: Data[] = tsv.data
             if(arr[i].name === row[0]) {
                 arr[i].elaborations.push({
                     text: row[1],
-                    link: row[2] || null
+                    link: row[2] || null,
+                    petitionLink: row[3] || null,
+                    petitionLinkTitle: row[4] || null
                 })
-                arr[i].petitionLink = arr[i].petitionLink || row[3] || null
                 return arr;
             }
         }
         arr.push({
             name: row[0],
             elaborations: [
-                {text: row[1], link: row[2] || null}
-            ],
-            petitionLink: row[3] || null
+                {text: row[1], link: row[2] || null, petitionLink: row[3] || null, petitionLinkTitle: row[4] || null}
+            ]
         })
         return arr;
     }, []);
